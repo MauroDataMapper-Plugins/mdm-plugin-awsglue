@@ -1,0 +1,23 @@
+dependencies {
+
+    // https://mvnrepository.com/artifact/software.amazon.awssdk/auth
+    compile group: 'software.amazon.awssdk', name: 'auth', version: '2.15.26'
+
+    // https://mvnrepository.com/artifact/software.amazon.awssdk/regions
+    compile group: 'software.amazon.awssdk', name: 'regions', version: '2.15.26'
+
+    // https://mvnrepository.com/artifact/software.amazon.awssdk/glue
+    compile group: 'software.amazon.awssdk', name: 'glue', version: '2.15.26'
+
+
+    runtimeOnly "io.methvin:directory-watcher", {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    // Postgres database
+    runtimeOnly "org.hibernate:hibernate-jcache"
+    runtimeOnly group: 'org.ehcache', name: 'ehcache'
+    runtimeOnly group: 'org.postgresql', name: 'postgresql'
+
+    testImplementation group: 'uk.ac.ox.softeng.maurodatamapper', name: 'mdm-testing-framework', version: mdmTestingFrameworkVersion
+}
