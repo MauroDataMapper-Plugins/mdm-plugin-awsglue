@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 University of Oxford
+ * Copyright 2020 University of Oxford and Health and Social Care Information Centre, also known as NHS Digital
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.PrimitiveType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.importer.DataModelImporterProviderService
 import uk.ac.ox.softeng.maurodatamapper.security.User
 
+import groovy.util.logging.Slf4j
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.regions.Region
@@ -39,8 +40,6 @@ import software.amazon.awssdk.services.glue.model.GetDatabasesResponse
 import software.amazon.awssdk.services.glue.model.GetTablesRequest
 import software.amazon.awssdk.services.glue.model.GetTablesResponse
 import software.amazon.awssdk.services.glue.model.GlueException
-
-import groovy.util.logging.Slf4j
 
 @Slf4j
 class AwsGlueDataModelImporterProviderService<T extends AwsGlueDataModelImporterProviderServiceParameters>
