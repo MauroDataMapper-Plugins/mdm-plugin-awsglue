@@ -102,6 +102,7 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "io.micronaut:micronaut-http-client"
     testCompile "org.grails:grails-web-testing-support"
+    testCompile "org.grails:views-json-testing-support"
     //testCompile "org.grails:grails-plugin-testing"
     testCompile "io.micronaut:micronaut-http-client"
 }
@@ -140,25 +141,11 @@ grailsPublish {
 grails {
     plugins {
         compile group: 'uk.ac.ox.softeng.maurodatamapper', name: 'mdm-core', version: mdmCoreVersion
-        compile group: 'uk.ac.ox.softeng.maurodatamapper', name: 'mdm-plugin-datamodel', version: mdmPluginDataModelVersion
-        compile group: 'uk.ac.ox.softeng.maurodatamapper.plugins', name: 'mdm-plugin-profile', version: mdmPluginProfileVersion
+        compile group: 'uk.ac.ox.softeng.maurodatamapper', name: 'mdm-plugin-datamodel', version: mdmCoreVersion
+//        compile group: 'uk.ac.ox.softeng.maurodatamapper.plugins', name: 'mdm-plugin-profile', version: mdmPluginProfileVersion
     }
 }
 
 apply from: 'dependencies.gradle'
+apply from: "${projectDir}/gradle/additions/mdm.gradle"
 apply from: "${projectDir}/gradle/additions/grails.gradle"
-
-license {
-    header = file("${rootDir}/NOTICE")
-    excludes([
-        '**/*.gson',
-        '**/*.yml',
-        '**/META-INF/**',
-        '**/*.txt',
-        '**/*.json',
-        '**/*.gml',
-        '**/*.jpeg',
-        '**/*.png',
-        '**/*.xml'
-    ])
-}
