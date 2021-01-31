@@ -53,14 +53,14 @@ pipeline {
             }
         }
 
-        stage('Functional Test') {
+        stage('Integration Test') {
 
             steps {
                 sh "./grailsw test-app -integration"
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'build/test-results/functionalTest/*.xml'
+                    junit allowEmptyResults: true, testResults: 'build/test-results/integrationTest/*.xml'
                     publishHTML([
                         allowMissing         : false,
                         alwaysLinkToLastBuild: true,
