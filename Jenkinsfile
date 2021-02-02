@@ -78,7 +78,7 @@ pipeline {
             when {
                 allOf {
                     anyOf {
-                        branch 'master'
+                       branch 'main'
                         branch 'develop'
                     }
                     expression {
