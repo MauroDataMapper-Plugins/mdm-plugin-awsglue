@@ -18,6 +18,7 @@
 package uk.ac.ox.softeng.maurodatamapper.plugins.awsglue
 
 import uk.ac.ox.softeng.maurodatamapper.api.exception.ApiInternalException
+import uk.ac.ox.softeng.maurodatamapper.api.exception.ApiNotYetImplementedException
 import uk.ac.ox.softeng.maurodatamapper.api.exception.ApiUnauthorizedException
 import uk.ac.ox.softeng.maurodatamapper.core.facet.Metadata
 import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModel
@@ -30,6 +31,7 @@ import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.importer.DataModelImp
 import uk.ac.ox.softeng.maurodatamapper.security.User
 
 import groovy.util.logging.Slf4j
+import org.springframework.beans.factory.annotation.Autowired
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
 import software.amazon.awssdk.regions.Region
@@ -42,11 +44,11 @@ import software.amazon.awssdk.services.glue.model.GetTablesResponse
 import software.amazon.awssdk.services.glue.model.GlueException
 
 @Slf4j
-class AwsGlueDataModelImporterProviderService<T extends AwsGlueDataModelImporterProviderServiceParameters>
-    extends DataModelImporterProviderService<T> {
+class AwsGlueDataModelImporterProviderService
+    extends DataModelImporterProviderService<AwsGlueDataModelImporterProviderServiceParameters> {
 
     @Autowired
-    DataModelService dataModelService 
+    DataModelService dataModelService
 
     @Override
     String getDisplayName() {
@@ -64,54 +66,56 @@ class AwsGlueDataModelImporterProviderService<T extends AwsGlueDataModelImporter
     }
 
     @Override
-    List<DataModel> importDataModels(User currentUser, T params) {
+    List<DataModel> importModels(User currentUser, AwsGlueDataModelImporterProviderServiceParameters params) {
         if (!currentUser) throw new ApiUnauthorizedException('GLUEIP01', 'User must be logged in to import model')
         log.debug("importDataModels")
 
         String namespace = "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue"
-        
+
         List<DataModel> imported = []
 
-        StaticCredentialsProvider staticCredentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(params.accessKeyId, params.secretAccessKey))
+        StaticCredentialsProvider staticCredentialsProvider =
+            StaticCredentialsProvider.create(AwsBasicCredentials.create(params.accessKeyId, params.secretAccessKey))
 
         //If no region provided then use eu-west-2
-        GlueClientBuilder glueClientBuilder = GlueClient.builder().region(Region.of(params.regionName ?: 'eu-west-2')).credentialsProvider(staticCredentialsProvider)
+        GlueClientBuilder glueClientBuilder = GlueClient.builder().region(Region.of(params.regionName ?: 'eu-west-2')).
+            credentialsProvider(staticCredentialsProvider)
 
         GlueClient glueClient = glueClientBuilder.build()
 
         try {
             GetDatabasesResponse response = glueClient.getDatabases(GetDatabasesRequest.builder().build())
 
-            response.databaseList().each { database ->
+            response.databaseList().each {database ->
                 log.debug("importDataModel ${database.name()}")
                 DataModel dataModel = new DataModel(label: database.name())
-            
+
                 //Add metadata
-                database.parameters().each { param ->                
+                database.parameters().each {param ->
                     Metadata metadata = new Metadata(namespace: namespace, key: param.key, value: param.value)
                     dataModel.addToMetadata(metadata)
                 }
 
                 Map<String, DataType> dataTypes = [:]
                 GetTablesResponse getTablesResponse = glueClient.getTables(GetTablesRequest.builder().databaseName(database.name()).build())
-                getTablesResponse.tableList().each { table ->
+                getTablesResponse.tableList().each {table ->
                     DataClass dataClass = new DataClass(label: table.name())
-                    table.parameters().each { param ->
+                    table.parameters().each {param ->
                         dataClass.addToMetadata(new Metadata(namespace: namespace, key: param.key, value: param.value))
                     }
 
-                    table.storageDescriptor().columns().each { column ->
+                    table.storageDescriptor().columns().each {column ->
                         DataType columnDataType = dataTypes[column.name()]
-                        if(!columnDataType) {
+                        if (!columnDataType) {
                             columnDataType = new PrimitiveType(label: column.type())
                             dataTypes[column.name()] = columnDataType
                         }
                         DataElement dataElement = new DataElement(label: column.name(), dataType: columnDataType)
-                    
-                        column.parameters().each { param ->
+
+                        column.parameters().each {param ->
                             dataElement.addToMetadata(new Metadata(namespace: namespace, key: param.key, value: param.value))
                         }
-                    
+
                         dataClass.addToDataElements(dataElement)
                     }
 
@@ -120,31 +124,26 @@ class AwsGlueDataModelImporterProviderService<T extends AwsGlueDataModelImporter
 
                 dataModelService.checkImportedDataModelAssociations(currentUser, dataModel)
                 imported += dataModel
-            }    
+            }
 
             glueClient.close()
-        } 
+        }
         catch (GlueException ex) {
             throw new ApiInternalException('GLUEIP02', "${ex.message}")
-        }        
+        }
 
         imported.collect {updateImportedModelFromParameters(it, params, imported.size() > 1)}
         imported
     }
 
     @Override
-    DataModel importDataModel(User currentUser, T params) {
+    DataModel importModel(User currentUser, AwsGlueDataModelImporterProviderServiceParameters params) {
         log.debug("importDataModel")
+        throw new ApiNotYetImplementedException('AGDMIPSXX', 'importModel')
     }
 
     @Override
     Boolean canImportMultipleDomains() {
         true
-    }    
-
-    DataModel updateImportedModelFromParameters(DataModel dataModel, T params, boolean list = false) {
-        if (params.finalised != null) dataModel.finalised = params.finalised
-        if (!list && params.modelName) dataModel.label = params.modelName
-        dataModel
-    }    
+    }
 }

@@ -27,10 +27,10 @@ class AwsGlueDataModelImporterProviderServiceParameters extends DataModelImporte
         displayName = 'Region',
         description = 'AWS Region. If not specified then eu-west-2 will be used.',
         optional = true,
-        order = -1,
+        order = 1,
         group = @ImportGroupConfig(
             name = 'AWS Connection',
-            order = 1
+            order = -1
         )
     )
     String regionName
@@ -38,10 +38,10 @@ class AwsGlueDataModelImporterProviderServiceParameters extends DataModelImporte
     @ImportParameterConfig(
         displayName = 'Access Key ID',
         description = 'Your AWS Access Key ID',
-        order = -1,
+        order = 2,
         group = @ImportGroupConfig(
             name = 'AWS Connection',
-            order = 2
+            order = -1
         )
     )
     String accessKeyId
@@ -49,10 +49,10 @@ class AwsGlueDataModelImporterProviderServiceParameters extends DataModelImporte
     @ImportParameterConfig(
         displayName = 'Secret Access Key',
         description = 'Your AWS Secret Access Key',
-        order = -1,
+        order = 3,
         group = @ImportGroupConfig(
             name = 'AWS Connection',
-            order = 3
+            order = -1
         )
     )
     String secretAccessKey    
