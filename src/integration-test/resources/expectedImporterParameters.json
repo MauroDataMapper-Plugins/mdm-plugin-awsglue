@@ -1,14 +1,14 @@
 {
   "importer": {
     "name": "AwsGlueDataModelImporterProviderService",
-    "version": "2.1.0-SNAPSHOT",
+    "version": "1.0.0",
     "displayName": "AWS Glue Importer",
     "namespace": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue",
     "allowsExtraMetadataKeys": true,
     "knownMetadataKeys": [
     ],
     "providerType": "DataModelImporter",
-    "paramClassType": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue.AwsGlueDataModelImporterProviderServiceParameters",
+    "paramClassType": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue.importer.parameter.AwsGlueDataModelImporterProviderServiceParameters",
     "canImportMultipleDomains": true
   },
   "parameterGroups": [
