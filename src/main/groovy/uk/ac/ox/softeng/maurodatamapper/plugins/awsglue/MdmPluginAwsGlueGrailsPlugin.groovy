@@ -60,7 +60,6 @@ The AWS Glue importer services and controllers for the Mauro Data Mapper backend
     def dependsOn = [
         mdmCore           : '4.0.0 > *',
         mdmPluginDatamodel: '4.0.0 > *',
-        mdmPluginProfile  : '1.0.0 > *',
     ]
 
     Closure doWithSpring() {
