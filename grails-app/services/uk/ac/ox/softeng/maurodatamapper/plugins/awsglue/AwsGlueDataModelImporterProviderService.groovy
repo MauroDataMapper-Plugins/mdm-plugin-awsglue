@@ -28,6 +28,7 @@ import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataElement
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.DataType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.PrimitiveType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.importer.DataModelImporterProviderService
+import uk.ac.ox.softeng.maurodatamapper.plugins.awsglue.importer.parameter.AwsGlueDataModelImporterProviderServiceParameters
 import uk.ac.ox.softeng.maurodatamapper.security.User
 
 import groovy.util.logging.Slf4j
@@ -57,7 +58,7 @@ class AwsGlueDataModelImporterProviderService
 
     @Override
     String getVersion() {
-        '2.1.0-SNAPSHOT'
+        '1.0.0'
     }
 
     @Override
