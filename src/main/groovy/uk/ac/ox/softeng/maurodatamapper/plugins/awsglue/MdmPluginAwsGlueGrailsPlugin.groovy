@@ -55,7 +55,7 @@ The AWS Glue importer services and controllers for the Mauro Data Mapper backend
     def issueManagement = [system: "YouTrack", url: "https://maurodatamapper.myjetbrains.com"]
 
     // Online location of the plugin's browseable source code.
-    def scm = [url: "https://github.com/mauroDataMapper-plugins/mdm-plugins-awsglue"]
+    def scm = [url: "https://github.com/mauroDataMapper-plugin/mdm-plugins-awsglue"]
 
     def dependsOn = [
         mdmCore           : '4.0.0 > *',
