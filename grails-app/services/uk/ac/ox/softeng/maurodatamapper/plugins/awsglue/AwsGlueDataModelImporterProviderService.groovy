@@ -106,10 +106,11 @@ class AwsGlueDataModelImporterProviderService
                     }
 
                     table.storageDescriptor().columns().each {column ->
-                        DataType columnDataType = dataTypes[column.name()]
+                        DataType columnDataType = dataTypes[column.type()]
                         if (!columnDataType) {
                             columnDataType = new PrimitiveType(label: column.type())
-                            dataTypes[column.name()] = columnDataType
+                            dataTypes[column.type()] = columnDataType
+                            dataModel.addToDataTypes(columnDataType)
                         }
                         DataElement dataElement = new DataElement(label: column.name(), dataType: columnDataType)
 
