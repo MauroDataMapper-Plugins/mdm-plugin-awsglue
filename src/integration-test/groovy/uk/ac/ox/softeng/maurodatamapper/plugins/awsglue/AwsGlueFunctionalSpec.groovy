@@ -56,7 +56,7 @@ class AwsGlueFunctionalSpec extends BaseFunctionalSpec {
 
     void 'test importer parameters'() {
         when:
-        GET('importer/parameters/uk.ac.ox.softeng.maurodatamapper.plugins.awsglue/AwsGlueDataModelImporterProviderService/1.1.1', STRING_ARG)
+        GET('importer/parameters/uk.ac.ox.softeng.maurodatamapper.plugins.awsglue/AwsGlueDataModelImporterProviderService/1.1.2-SNAPSHOT', STRING_ARG)
 
         then:
         verifyJsonResponse OK, new String(loadTestFile('expectedImporterParameters.json'))
