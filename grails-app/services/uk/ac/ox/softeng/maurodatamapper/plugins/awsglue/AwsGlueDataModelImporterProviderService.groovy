@@ -23,6 +23,7 @@ import uk.ac.ox.softeng.maurodatamapper.api.exception.ApiUnauthorizedException
 import uk.ac.ox.softeng.maurodatamapper.core.facet.Metadata
 import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModel
 import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModelService
+import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModelType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataClass
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataElement
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.DataType
@@ -89,7 +90,7 @@ class AwsGlueDataModelImporterProviderService
 
             response.databaseList().each {database ->
                 log.debug("importDataModel ${database.name()}")
-                DataModel dataModel = new DataModel(label: database.name())
+                DataModel dataModel = new DataModel(label: database.name(), type: DataModelType.DATA_ASSET)
 
                 //Add metadata
                 database.parameters().each {param ->
