@@ -59,7 +59,7 @@ class AwsGlueDataModelImporterProviderService
 
     @Override
     String getVersion() {
-        '1.1.2-SNAPSHOT'
+        '1.2.0'
     }
 
     @Override
