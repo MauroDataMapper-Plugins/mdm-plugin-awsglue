@@ -1,7 +1,7 @@
 {
   "importer": {
     "name": "AwsGlueDataModelImporterProviderService",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "displayName": "AWS Glue Importer",
     "namespace": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue",
     "allowsExtraMetadataKeys": true,
