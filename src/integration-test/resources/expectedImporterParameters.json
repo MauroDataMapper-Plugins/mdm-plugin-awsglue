@@ -13,6 +13,18 @@
   },
   "parameterGroups": [
     {
+      "name": "Database Import Details",
+      "parameters": [
+        {
+          "name": "schemaNames",
+          "type": "String",
+          "optional": true,
+          "displayName": "Database Names",
+          "description": "A comma-separated list of the database names to import.\nIf not supplied then all databases will be imported."
+        }
+      ]
+    },
+    {
       "name": "AWS Connection",
       "parameters": [
         {
