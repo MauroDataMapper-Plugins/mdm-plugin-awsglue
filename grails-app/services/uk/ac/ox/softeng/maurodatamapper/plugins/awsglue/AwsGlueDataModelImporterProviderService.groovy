@@ -74,6 +74,12 @@ class AwsGlueDataModelImporterProviderService
 
         String namespace = "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue"
 
+        List<String> includeOnly = []
+
+        if (params.schemaNames) {
+            includeOnly = params.schemaNames.split(',') as List<String>
+        }
+
         List<DataModel> imported = []
 
         StaticCredentialsProvider staticCredentialsProvider =
@@ -89,46 +95,49 @@ class AwsGlueDataModelImporterProviderService
             GetDatabasesResponse response = glueClient.getDatabases(GetDatabasesRequest.builder().build())
 
             response.databaseList().each {database ->
-                log.debug("importDataModel ${database.name()}")
-                DataModel dataModel = new DataModel(label: database.name(), type: DataModelType.DATA_ASSET)
+                log.debug("AWS database ${database.name()}")
+                if (!includeOnly || includeOnly.contains(database.name())) {
+                    log.debug("importDataModel ${database.name()}")
+                    DataModel dataModel = new DataModel(label: database.name(), type: DataModelType.DATA_ASSET)
 
-                //Add metadata
-                database.parameters().each {param ->
-                    Metadata metadata = new Metadata(namespace: namespace, key: param.key, value: param.value)
-                    dataModel.addToMetadata(metadata)
-                }
-
-                Map<String, DataType> dataTypes = [:]
-                GetTablesResponse getTablesResponse = glueClient.getTables(GetTablesRequest.builder().databaseName(database.name()).build())
-                getTablesResponse.tableList().each {table ->
-                    DataClass dataClass = new DataClass(label: table.name())
-                    table.parameters().each {param ->
-                        dataClass.addToMetadata(new Metadata(namespace: namespace, key: param.key, value: param.value))
+                    //Add metadata
+                    database.parameters().each {param ->
+                        Metadata metadata = new Metadata(namespace: namespace, key: param.key, value: param.value)
+                        dataModel.addToMetadata(metadata)
                     }
 
-                    table.storageDescriptor().columns().each {column ->
-                        DataType columnDataType = dataTypes[column.type()]
-                        if (!columnDataType) {
-                            columnDataType = new PrimitiveType(label: column.type())
-                            dataTypes[column.type()] = columnDataType
-                            dataModel.addToDataTypes(columnDataType)
-                        }
-                        DataElement dataElement = new DataElement(label: column.name(), dataType: columnDataType)
-
-                        column.parameters().each {param ->
-                            dataElement.addToMetadata(new Metadata(namespace: namespace, key: param.key, value: param.value))
+                    Map<String, DataType> dataTypes = [:]
+                    GetTablesResponse getTablesResponse = glueClient.getTables(GetTablesRequest.builder().databaseName(database.name()).build())
+                    getTablesResponse.tableList().each {table ->
+                        DataClass dataClass = new DataClass(label: table.name())
+                        table.parameters().each {param ->
+                            dataClass.addToMetadata(new Metadata(namespace: namespace, key: param.key, value: param.value))
                         }
 
-                        dataClass.addToDataElements(dataElement)
+                        table.storageDescriptor().columns().each {column ->
+                            DataType columnDataType = dataTypes[column.type()]
+                            if (!columnDataType) {
+                                columnDataType = new PrimitiveType(label: column.type())
+                                dataTypes[column.type()] = columnDataType
+                                dataModel.addToDataTypes(columnDataType)
+                            }
+                            DataElement dataElement = new DataElement(label: column.name(), dataType: columnDataType)
+
+                            column.parameters().each {param ->
+                                dataElement.addToMetadata(new Metadata(namespace: namespace, key: param.key, value: param.value))
+                            }
+
+                            dataClass.addToDataElements(dataElement)
+                        }
+
+                        dataModel.addToDataClasses(dataClass)
                     }
 
-                    dataModel.addToDataClasses(dataClass)
+                    dataModelService.checkImportedDataModelAssociations(currentUser, dataModel)
+                    imported += dataModel
                 }
-
-                dataModelService.checkImportedDataModelAssociations(currentUser, dataModel)
-                imported += dataModel
             }
-
+                
             glueClient.close()
         }
         catch (GlueException ex) {

@@ -24,6 +24,19 @@ import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.importer.parameter.Da
 class AwsGlueDataModelImporterProviderServiceParameters extends DataModelImporterProviderServiceParameters {
 
     @ImportParameterConfig(
+        displayName = 'Database Names',
+        description = [
+            'A comma-separated list of the database names to import.',
+            'If not supplied then all databases will be imported.'],
+        order = 1,
+        optional = true,
+        group = @ImportGroupConfig(
+            name = 'Database Import Details',
+            order = -2
+        ))
+    String schemaNames
+
+    @ImportParameterConfig(
         displayName = 'Region',
         description = 'AWS Region. If not specified then eu-west-2 will be used.',
         optional = true,
