@@ -35,13 +35,15 @@ import static io.micronaut.http.HttpStatus.OK
 @Integration
 class AwsGlueFunctionalSpec extends BaseFunctionalSpec {
 
+    AwsGlueDataModelImporterProviderService awsGlueDataModelImporterProviderService
+
     @Shared
     Path resourcesPath
 
     @OnceBefore
     void setupResourcesPath() {
         resourcesPath = Paths.get(BuildSettings.BASE_DIR.absolutePath, 'src', 'integration-test', 'resources').toAbsolutePath()
-    }      
+    }
 
     @Override
     String getResourcePath() {
@@ -55,11 +57,16 @@ class AwsGlueFunctionalSpec extends BaseFunctionalSpec {
     }     
 
     void 'test importer parameters'() {
+        given:
+        String version = awsGlueDataModelImporterProviderService.version
+        String expected = new String(loadTestFile('expectedImporterParameters.json'))
+        String url = "importer/parameters/uk.ac.ox.softeng.maurodatamapper.plugins.awsglue/AwsGlueDataModelImporterProviderService/$version"
+
         when:
-        GET('importer/parameters/uk.ac.ox.softeng.maurodatamapper.plugins.awsglue/AwsGlueDataModelImporterProviderService/1.1.1', STRING_ARG)
+        GET(url, STRING_ARG)
 
         then:
-        verifyJsonResponse OK, new String(loadTestFile('expectedImporterParameters.json'))
+        verifyJsonResponse OK, expected
     }
 
 }

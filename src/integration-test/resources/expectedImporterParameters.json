@@ -1,7 +1,7 @@
 {
   "importer": {
     "name": "AwsGlueDataModelImporterProviderService",
-    "version": "1.1.1",
+    "version": "${json-unit.matches:version}",
     "displayName": "AWS Glue Importer",
     "namespace": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue",
     "allowsExtraMetadataKeys": true,
@@ -12,6 +12,18 @@
     "canImportMultipleDomains": true
   },
   "parameterGroups": [
+    {
+      "name": "Database Import Details",
+      "parameters": [
+        {
+          "name": "schemaNames",
+          "type": "String",
+          "optional": true,
+          "displayName": "Database Names",
+          "description": "A comma-separated list of the database names to import.\nIf not supplied then all databases will be imported."
+        }
+      ]
+    },
     {
       "name": "AWS Connection",
       "parameters": [

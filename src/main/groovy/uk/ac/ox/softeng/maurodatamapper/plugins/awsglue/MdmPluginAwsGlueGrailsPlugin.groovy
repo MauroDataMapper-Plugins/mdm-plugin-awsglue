@@ -58,8 +58,8 @@ The AWS Glue importer services and controllers for the Mauro Data Mapper backend
     def scm = [url: "https://github.com/mauroDataMapper-plugin/mdm-plugins-awsglue"]
 
     def dependsOn = [
-        mdmCore           : '4.0.0 > *',
-        mdmPluginDatamodel: '4.0.0 > *',
+        mdmCore           : '4.1.0 > *',
+        mdmPluginDatamodel: '4.1.0 > *',
     ]
 
     Closure doWithSpring() {
