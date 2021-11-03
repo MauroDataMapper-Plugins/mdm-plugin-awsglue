@@ -6,6 +6,7 @@
     "namespace": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue",
     "allowsExtraMetadataKeys": true,
     "knownMetadataKeys": [
+
     ],
     "providerType": "DataModelImporter",
     "paramClassType": "uk.ac.ox.softeng.maurodatamapper.plugins.awsglue.importer.parameter.AwsGlueDataModelImporterProviderServiceParameters",
@@ -80,6 +81,13 @@
           "optional": false,
           "displayName": "Import as New Documentation Version",
           "description": "Should the Model/s be imported as new Documentation Version/s. If selected then any models with the same name will be superseded and the imported models will be given the latest documentation version of the existing Models. If not selected then the 'Model Name' field should be used to ensure the imported Model is uniquely named, otherwise you could get an error."
+        },
+        {
+          "name": "propagateFromPreviousVersion",
+          "type": "Boolean",
+          "optional": false,
+          "displayName": "Propagate From Previous Version",
+          "description": "Propagate descriptions and facets from the last version. Default: false."
         },
         {
           "name": "finalised",
