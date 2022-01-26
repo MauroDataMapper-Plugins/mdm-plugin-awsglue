@@ -23,7 +23,7 @@ import grails.plugins.Plugin
 class MdmPluginAwsGlueGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "4.0.0 > *"
+    def grailsVersion = '5.1.2 > *'
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
         "grails-app/views/error.gsp"
@@ -58,8 +58,8 @@ The AWS Glue importer services and controllers for the Mauro Data Mapper backend
     def scm = [url: "https://github.com/mauroDataMapper-plugin/mdm-plugins-awsglue"]
 
     def dependsOn = [
-        mdmCore           : '4.1.0 > *',
-        mdmPluginDatamodel: '4.1.0 > *',
+        mdmCore : '5.0.0 > *',
+        mdmPluginDatamodel : '5.0.0 > *',
     ]
 
     Closure doWithSpring() {
