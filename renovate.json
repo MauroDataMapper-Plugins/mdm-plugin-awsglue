@@ -1,5 +1,22 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":dependencyDashboard",
+    "schedule:nonOfficeHours",
+    ":reviewer(olliefreeman)",
+    ":label(dependencies)"
+  ],
+  "packageRules": [
+    {
+      "excludePackagePrefixes": [
+        "org.grails",
+        "org.grails.plugins",
+        "org.springframework",
+        "io.micronaut",
+        "org.hibernate",
+        "com.bertramlabs.plugins",
+        "org.codehaus.groovy"
+      ]
+    }
   ]
 }
