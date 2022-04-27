@@ -2,20 +2,32 @@
   "extends": [
     "config:base",
     ":dependencyDashboard",
-    "schedule:nonOfficeHours",
     ":reviewer(olliefreeman)",
-    ":label(dependencies)"
+    ":label(dependencies)",
+    ":prHourlyLimitNone"
+  ],
+  "ignoreDeps": [
+    "gradle"
   ],
   "packageRules": [
     {
-      "excludePackagePrefixes": [
+      "groupName": "Grails Packages",
+      "description": "Packages that will be controlled manually and updated in mdm-core first",
+      "matchPackagePrefixes": [
         "org.grails",
-        "org.grails.plugins",
         "org.springframework",
         "io.micronaut",
         "org.hibernate",
         "com.bertramlabs.plugins",
         "org.codehaus.groovy"
+      ],
+      "enabled": false
+    },
+    {
+      "groupName": "MDM Packages",
+      "description": "Packages that come from the main mdm repos",
+      "matchPackagePrefixes": [
+        "uk.ac.ox.softeng.maurodatamapper:"
       ]
     }
   ]
