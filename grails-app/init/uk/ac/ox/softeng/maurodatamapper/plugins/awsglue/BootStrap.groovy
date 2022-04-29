@@ -17,19 +17,11 @@
  */
 package uk.ac.ox.softeng.maurodatamapper.plugins.awsglue
 
-
-import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModel
-import uk.ac.ox.softeng.maurodatamapper.datamodel.bootstrap.BootstrapModels
-
 class BootStrap {
 
     AwsGlueDataModelImporterProviderService awsGlueProviderService
 
     def init = { servletContext ->
-
-        DataModel.withNewTransaction {
-            DataModel entity = DataModel.findByLabel(BootstrapModels.COMPLEX_DATAMODEL_NAME)
-        }
     }
     def destroy = {
     }
