@@ -70,6 +70,16 @@ class AwsGlueDataModelImporterProviderService
     }
 
     @Override
+    Boolean handlesContentType(String contentType) {
+        false
+    }
+
+    @Override
+    Boolean canImportMultipleDomains() {
+        true
+    }
+
+    @Override
     List<DataModel> importModels(User currentUser, AwsGlueDataModelImporterProviderServiceParameters params) {
         if (!currentUser) throw new ApiUnauthorizedException('GLUEIP01', 'User must be logged in to import model')
         log.debug("importDataModels")
@@ -162,10 +172,5 @@ class AwsGlueDataModelImporterProviderService
     DataModel importModel(User currentUser, AwsGlueDataModelImporterProviderServiceParameters params) {
         log.debug("importDataModel")
         throw new ApiNotYetImplementedException('AGDMIPSXX', 'importModel')
-    }
-
-    @Override
-    Boolean canImportMultipleDomains() {
-        true
     }
 }
